@@ -150,8 +150,6 @@ class Student(models.Model):
             return f"Student: {self.user_id.phone_number}"
         return f"Student #{self.id}"
 
-# ไปแก้ form.py, register.html, views.py ให้เป็นไปตาม logic การ register STUDENT, OWNER
-
 
 
 
