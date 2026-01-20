@@ -1,3 +1,8 @@
+* [ ] **ความคืบหน้าปัจจุบัน**
+  * Authentication สำหรับ user และ admin ด้วย phone_number, password
+  * แยก Role ของ User ระหว่าง STUDENT, OWNER ผ่านการ register(แก้ไขในอนาคต)
+  * เก็บข้อมูล user ที่จำเป็น ก่อนเชื่อมไปยังตาราง student และ ตาราง mentor เพื่อเก็บข้อมูลแยกกันในอนาคต
+ 
 * [ ] **สร้างและเปิดใช้งาน Virtual Environment**
 
   * Windows (PowerShell)
