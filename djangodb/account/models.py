@@ -28,6 +28,9 @@ class UserManager(BaseUserManager):
 
         return self.create_user(phone_number, password, **extra_fields)
 
+class Department(models.Model):
+    dept_name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank=True, null=True, unique=True)
@@ -37,20 +40,20 @@ class User(AbstractBaseUser, PermissionsMixin):
         'Role',
         related_name='users',
         on_delete=models.PROTECT,
-        blank=True,
-        null=True
+        null=True,
+        blank=True
     )
 
-    fname = models.CharField(max_length=100, blank=True)
-    lname = models.CharField(max_length=100, blank=True)
-
-    university = models.ForeignKey(
-        'University',
+    department = models.ForeignKey(
+        'Department',
         related_name='users',
         on_delete=models.PROTECT,
         blank=True,
         null=True
     )
+    
+    fname = models.CharField(max_length=100, blank=True)
+    lname = models.CharField(max_length=100, blank=True)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -80,5 +83,76 @@ class University(models.Model):
 
     def __str__(self):
         return self.name
-
     
+class Staff(models.Model):
+    user_id = models.ForeignKey(
+        'User',
+        related_name='staff',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
+    employee_id = models.CharField(max_length=50)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        if self.user_id:
+            return f"Staff: {self.user_id.phone_number}"
+        return f"Staff #{self.id}"
+
+class Major(models.Model):
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+
+class Student(models.Model):
+    user_id = models.ForeignKey(
+        'User',
+        related_name='students',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
+
+    mentor = models.ForeignKey(
+        'Staff',
+        related_name='students',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
+
+    picture = models.CharField(max_length=255, blank=True, null= True)
+    hours = models.DecimalField(max_digits=5, decimal_places=2)
+    start_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    university = models.ForeignKey(
+        'University',
+        related_name='students',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
+
+    major = models.ForeignKey(
+        'Major',
+        related_name='students',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        if self.user_id:
+            return f"Student: {self.user_id.phone_number}"
+        return f"Student #{self.id}"
+
+# ไปแก้ form.py, register.html, views.py ให้เป็นไปตาม logic การ register STUDENT, OWNER
+
+
+
+
+        
