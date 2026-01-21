@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import StudentLoginForm, OwnerLoginForm, StudentRegisterForm, OwnerRegisterForm
 
-BACKEND_PHONE_PATH = "account.backends.PhoneBackend"
-BACKEND_EMPLOYEE_PATH= "account.backends.EmployeeIdBackend"
+BACKEND_STUDENT_PATH = "account.backends.PhoneBackend"
+BACKEND_OWNER_PATH= "account.backends.OwnerBackend"
 
 #from .forms import BaseRegisterForm
 # def register_view(request):
@@ -31,7 +31,7 @@ def login_student_view(request):
     form = StudentLoginForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         user = form.cleaned_data["user"]
-        login(request, user, backend=BACKEND_PHONE_PATH)
+        login(request, user, backend=BACKEND_STUDENT_PATH)
         return redirect("home")
 
     return render(request, "account/login_student.html", {"form": form})
@@ -44,7 +44,7 @@ def login_owner_view(request):
     form = OwnerLoginForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         user = form.cleaned_data["user"]
-        login(request, user, backend=BACKEND_EMPLOYEE_PATH)
+        login(request, user, backend=BACKEND_OWNER_PATH)
         return redirect("home")
 
     return render(request, "account/login_owner.html", {"form": form})
@@ -58,7 +58,7 @@ def register_student_view(request):
     if request.method == "POST" and form.is_valid():
         user = form.save()
         # student -> login ด้วย PhoneBackend
-        login(request, user, backend="account.backends.PhoneBackend")
+        login(request, user, backend=BACKEND_STUDENT_PATH)
         return redirect("home")
 
     return render(request, "account/register_student.html", {"form": form})
@@ -72,7 +72,7 @@ def register_owner_view(request):
     if request.method == "POST" and form.is_valid():
         user = form.save()
         # owner -> login ด้วย EmployeeIdBackend
-        login(request, user, backend="account.backends.EmployeeIdBackend")
+        login(request, user, backend=BACKEND_OWNER_PATH)
         return redirect("home")
 
     return render(request, "account/register_owner.html", {"form": form})

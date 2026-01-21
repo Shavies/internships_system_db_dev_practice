@@ -94,19 +94,18 @@ class StudentLoginForm(forms.Form):
         cleaned["user"] = user
         return cleaned
 
-
 class OwnerLoginForm(forms.Form):
-    employee_id = forms.CharField(max_length=50)
+    identifier = forms.CharField(label="Employee ID / Phone number")
     password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):
         cleaned = super().clean()
-        emp = cleaned.get("employee_id")
+        identifier = cleaned.get("identifier")
         pw = cleaned.get("password")
 
-        user = authenticate(employee_id=emp, password=pw)
+        user = authenticate(identifier=identifier, password=pw)
         if user is None:
-            raise forms.ValidationError("employee_id หรือรหัสผ่านไม่ถูกต้อง")
+            raise forms.ValidationError("ข้อมูลไม่ถูกต้อง หรือไม่มีสิทธิ์เข้า OWNER")
         cleaned["user"] = user
         return cleaned
 

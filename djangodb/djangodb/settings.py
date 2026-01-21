@@ -111,9 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'account.backends.PhoneBackend',
-    "account.backends.EmployeeIdBackend",
-    'django.contrib.auth.backends.ModelBackend',
+    "account.backends.PhoneBackend",        # student (+ admin phone)
+    "account.backends.OwnerBackend",        # owner (employee_id / admin phone)
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 

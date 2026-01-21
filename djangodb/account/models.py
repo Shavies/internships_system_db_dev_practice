@@ -31,6 +31,8 @@ class UserManager(BaseUserManager):
 class Department(models.Model):
     dept_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
+    def __str__(self):
+        return self.dept_name
 
 class Role(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -89,8 +91,8 @@ class Staff(models.Model):
         'User',
         related_name='staff_profile',
         on_delete=models.PROTECT,
-        null=True,
-        blank=True
+        null=False,
+        blank=False
     )
     employee_id = models.CharField(max_length=50, unique=True) 
     created_at = models.DateTimeField(default=timezone.now, editable=False)
@@ -104,14 +106,16 @@ class Staff(models.Model):
 class Major(models.Model):
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
+    def __str__(self):
+        return self.name
 
 class Student(models.Model):
     user = models.OneToOneField(
         'User',
         related_name='student_profile',
         on_delete=models.PROTECT,
-        null=True,
-        blank=True
+        null=False,
+        blank=False
     )
 
 
