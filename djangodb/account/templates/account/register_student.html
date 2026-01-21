@@ -1,0 +1,73 @@
+<h2>Register (STUDENT)</h2>
+
+<form method="post">
+  {% csrf_token %}
+
+  <p>
+    {{ form.phone_number.label_tag }}
+    {{ form.phone_number }}
+    {{ form.phone_number.errors }}
+  </p>
+
+  <p>
+    {{ form.email.label_tag }}
+    {{ form.email }}
+    {{ form.email.errors }}
+  </p>
+
+  <p>
+    {{ form.fname.label_tag }}
+    {{ form.fname }}
+    {{ form.fname.errors }}
+  </p>
+
+  <p>
+    {{ form.lname.label_tag }}
+    {{ form.lname }}
+    {{ form.lname.errors }}
+  </p>
+
+  <hr/>
+
+  <p>
+    {{ form.university_name.label_tag }}
+    {{ form.university_name }}
+    {{ form.university_name.errors }}
+  </p>
+
+  <p>
+    {{ form.major_name.label_tag }}
+    {{ form.major_name }}
+    {{ form.major_name.errors }}
+  </p>
+
+  <hr/>
+
+  <p>
+    {{ form.password1.label_tag }}
+    {{ form.password1 }}
+    {{ form.password1.errors }}
+  </p>
+
+  <p>
+    {{ form.password2.label_tag }}
+    {{ form.password2 }}
+    {{ form.password2.errors }}
+  </p>
+
+  {% if form.non_field_errors %}
+    <div>
+      {{ form.non_field_errors }}
+    </div>
+  {% endif %}
+
+  <button type="submit">Create STUDENT account</button>
+</form>
+
+<p>
+  มีบัญชีแล้ว? <a href="{% url 'login' %}">Login</a>
+</p>
+
+<p>
+  สมัครเป็น OWNER? <a href="{% url 'register_owner' %}">Register OWNER</a>
+</p>
