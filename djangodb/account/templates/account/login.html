@@ -4,4 +4,8 @@
   {{ form.as_p }}
   <button type="submit">Login</button>
 </form>
-<p>ยังไม่มีบัญชี? <a href="{% url 'register' %}">Register</a></p>
+<p>
+  สมัครสมาชิก:
+  <a href="{% url 'register_owner' %}">Register OWNER</a> |
+  <a href="{% url 'register_student' %}">Register STUDENT</a>
+</p>

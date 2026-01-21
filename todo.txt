@@ -3,3 +3,4 @@
 # [views.py ให้เป็นไปตาม logic การ register STUDENT, OWNER], 
 # [หน้า login จะต้องมีให้เลือกระหว่าง register student/owner], 
 # [เมื่อ logged-in เข้าไป ระบบจะต้องแยกได้ว่าเป็น STUDENT หรือ OWNER]
+

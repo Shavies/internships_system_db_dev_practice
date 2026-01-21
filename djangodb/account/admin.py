@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from .models import User, Role, University, Student, Department
+from .models import User, Role, University, Student, Department, Staff, Major
 
 
 @admin.register(Role)
@@ -8,6 +8,16 @@ class RoleAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "description", "created_at")
     search_fields = ("name",)
 
+@admin.register(Staff)
+class StaffAdmin(admin.ModelAdmin):
+    list_display = ("id", "user_id", "employee_id", "is_active", "created_at")
+    search_fields = ("user_id__phone_number", "employee_id")
+    list_filter = ("is_active",)
+
+@admin.register(Major)
+class MajorAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "created_at")
+    search_fields = ("name",)
 
 @admin.register(University)
 class UniversityAdmin(admin.ModelAdmin):
@@ -15,7 +25,7 @@ class UniversityAdmin(admin.ModelAdmin):
     search_fields = ("name",)
 
 @admin.register(Student)
-class Student(admin.ModelAdmin):
+class StudentAdmin(admin.ModelAdmin):
     list_display = ("id", "user_id","mentor", "picture", "hours", "university", "start_date", "end_date", "major", "is_active")
     search_fields = ("user_id__phone_number",)
 
@@ -44,7 +54,7 @@ class UserAdmin(BaseUserAdmin):
         "last_login",
     )
 
-    search_fields = ("phone_number", "email", "fname", "lname", "role__name","department__name")
+    search_fields = search_fields = ("phone_number", "email", "fname", "lname", "role__name", "department__dept_name")
     list_filter = ("is_active", "is_staff", "is_superuser", "role")
 
     autocomplete_fields = ("role",) 

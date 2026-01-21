@@ -32,6 +32,14 @@ class Department(models.Model):
     dept_name = models.CharField(max_length=255)
     created_at = models.DateTimeField(default=timezone.now, editable=False)
 
+class Role(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    
+    def __str__(self):
+        return self.name
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(blank=True, null=True, unique=True)
     phone_number = models.CharField(max_length=20, unique=True)
@@ -68,14 +76,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.phone_number
-    
-class Role(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(default=timezone.now, editable=False)
-    
-    def __str__(self):
-        return self.name
 
 class University(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -85,9 +85,9 @@ class University(models.Model):
         return self.name
     
 class Staff(models.Model):
-    user_id = models.ForeignKey(
+    user = models.OneToOneField(
         'User',
-        related_name='staff',
+        related_name='staff_profile',
         on_delete=models.PROTECT,
         null=True,
         blank=True
@@ -97,8 +97,8 @@ class Staff(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        if self.user_id:
-            return f"Staff: {self.user_id.phone_number}"
+        if self.user:
+            return f"Staff: {self.user.phone_number}"
         return f"Staff #{self.id}"
 
 class Major(models.Model):
@@ -106,13 +106,14 @@ class Major(models.Model):
     created_at = models.DateTimeField(default=timezone.now, editable=False)
 
 class Student(models.Model):
-    user_id = models.ForeignKey(
+    user = models.OneToOneField(
         'User',
-        related_name='students',
+        related_name='student_profile',
         on_delete=models.PROTECT,
         null=True,
         blank=True
     )
+
 
     mentor = models.ForeignKey(
         'Staff',
@@ -146,9 +147,10 @@ class Student(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        if self.user_id:
-            return f"Student: {self.user_id.phone_number}"
+        if self.user:
+            return f"Student: {self.user.phone_number}"
         return f"Student #{self.id}"
+
 
 
 
