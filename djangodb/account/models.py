@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
 
         phone_number = str(phone_number).strip()
         user = self.model(phone_number=phone_number, **extra_fields)
-        user.set_password(password)  # Django hashing
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
@@ -26,7 +26,19 @@ class UserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
+        from .models import Role  
+        admin_role, _ = Role.objects.get_or_create(
+            name="ADMIN",
+            defaults={"description": "System Administrator"},
+        )
+        extra_fields["role"] = admin_role
+
         return self.create_user(phone_number, password, **extra_fields)
+    
+    def save(self, *args, **kwargs):
+        if self.is_superuser and self.role and self.role.name != "ADMIN":
+            raise ValueError("Superuser must have ADMIN role")
+        super().save(*args, **kwargs)
 
 class Department(models.Model):
     dept_name = models.CharField(max_length=255)
@@ -74,7 +86,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = "phone_number"
-    REQUIRED_FIELDS = []  # createsuperuser -> phone_number + password
+    REQUIRED_FIELDS = []  # createsuperuser required
 
     def __str__(self):
         return self.phone_number
