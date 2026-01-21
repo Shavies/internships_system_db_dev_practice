@@ -92,7 +92,7 @@ class Staff(models.Model):
         null=True,
         blank=True
     )
-    employee_id = models.CharField(max_length=50)
+    employee_id = models.CharField(max_length=50, unique=True) 
     created_at = models.DateTimeField(default=timezone.now, editable=False)
     is_active = models.BooleanField(default=True)
 

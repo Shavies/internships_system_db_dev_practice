@@ -1,0 +1,13 @@
+<h2>Login (STUDENT)</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <p>{{ form.phone_number.label_tag }} {{ form.phone_number }} {{ form.phone_number.errors }}</p>
+  <p>{{ form.password.label_tag }} {{ form.password }} {{ form.password.errors }}</p>
+
+  {% if form.non_field_errors %}<div>{{ form.non_field_errors }}</div>{% endif %}
+  <button type="submit">Login Student</button>
+</form>
+
+<p>ยังไม่มีบัญชี? <a href="{% url 'register_student' %}">Register Student</a></p>
+<p>เป็น OWNER? <a href="{% url 'login_owner' %}">ไปหน้า Login Owner</a></p>

@@ -68,7 +68,6 @@ class OwnerRegisterForm(BaseRegisterForm):
         user.role = role_obj
         user.is_staff = True  # OWNER เข้า admin ได้
 
-        # ถ้ามี department
         user.department = self.cleaned_data.get("department_id")
 
         if commit:
@@ -80,20 +79,49 @@ class OwnerRegisterForm(BaseRegisterForm):
         )
         return user
 
-
-
-class LoginForm(forms.Form):
-    phone_number = forms.CharField()
+class StudentLoginForm(forms.Form):
+    phone_number = forms.CharField(max_length=20)
     password = forms.CharField(widget=forms.PasswordInput)
 
     def clean(self):
         cleaned = super().clean()
-        phone = cleaned.get("phone_number", "").strip()
-        password = cleaned.get("password")
+        phone = cleaned.get("phone_number")
+        pw = cleaned.get("password")
 
-        user = authenticate(phone_number=phone, password=password)
-        if not user:
+        user = authenticate(phone_number=phone, password=pw)
+        if user is None:
             raise forms.ValidationError("เบอร์โทรหรือรหัสผ่านไม่ถูกต้อง")
-
         cleaned["user"] = user
         return cleaned
+
+
+class OwnerLoginForm(forms.Form):
+    employee_id = forms.CharField(max_length=50)
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned = super().clean()
+        emp = cleaned.get("employee_id")
+        pw = cleaned.get("password")
+
+        user = authenticate(employee_id=emp, password=pw)
+        if user is None:
+            raise forms.ValidationError("employee_id หรือรหัสผ่านไม่ถูกต้อง")
+        cleaned["user"] = user
+        return cleaned
+
+# class LoginForm(forms.Form):
+#     phone_number = forms.CharField()
+#     password = forms.CharField(widget=forms.PasswordInput)
+
+#     def clean(self):
+#         cleaned = super().clean()
+#         phone = cleaned.get("phone_number", "").strip()
+#         password = cleaned.get("password")
+
+#         user = authenticate(phone_number=phone, password=password)
+#         if not user:
+#             raise forms.ValidationError("เบอร์โทรหรือรหัสผ่านไม่ถูกต้อง")
+
+#         cleaned["user"] = user
+#         return cleaned

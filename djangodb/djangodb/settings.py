@@ -84,9 +84,9 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'login_student'
 LOGIN_REDIRECT_URL = 'home'
-LOGOUT_REDIRECT_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login_student'
 
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
@@ -112,6 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTHENTICATION_BACKENDS = [
     'account.backends.PhoneBackend',
+    "account.backends.EmployeeIdBackend",
     'django.contrib.auth.backends.ModelBackend',
 ]
 
